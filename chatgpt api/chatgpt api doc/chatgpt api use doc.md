@@ -159,29 +159,27 @@ The API response will contain the following fields:
 
 ```json
     {
-      "id": "chatcmpl-123",
-      "object": "chat.completion",
-      "created": 1677652288,
-      "choices": [{
-        "index": 0,
-        "message": {
-          "role": "assistant",
-          "content": "\n\nHello there, how may I assist you today?",
-        },
-        "finish_reason": "stop"
-      }],
-      "usage": {
-        "prompt_tokens": 9,
-        "completion_tokens": 12,
-        "total_tokens": 21
-      }
+        "id": "chatcmpl-123",
+        "object": "chat.completion",
+        "created": 1677652288,
+        "choices": [{
+            "index": 0,
+            "message": {
+            "role": "assistant",
+            "content": "\n\nHello there, how may I assist you today?",
+            },
+            "finish_reason": "stop"
+        }],
+        "usage": {
+            "prompt_tokens": 9,
+            "completion_tokens": 12,
+            "total_tokens": 21
+        }
     }
 ```
 
 * `id` (string): A unique identifier for the completion.
-* `object` (string): The type of object returned, in this case, "chat
-
-.completion".
+* `object` (string): The type of object returned, in this case, "chat.completion".
 * `created` (integer): A timestamp of when the completion was created.
 * `choices` (array): The generated completions, including the generated text, the index of the completion, and the reason why the model stopped generating.
     * `index` (integer): The index of the completion. When you set `n` to more than 1, the API will return multiple completions. The index helps identify each distinct completion.
@@ -195,6 +193,8 @@ The API response will contain the following fields:
 
 ### **3.1. How to Use (Python Library)**
 
+The `Edit.create()` method in the OpenAI library allows you to utilize the functionality of the Edit API. Here's a basic usage example:
+
 ```python
 import os
 import openai
@@ -203,8 +203,8 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 response = openai.Edit.create(
   model="text-davinci-edit-001",
-  input="prompt",
-  instruction="instruction",
+  prompt="original text",
+  instruction="edit instruction",
   temperature=1,
   top_p=1
 )
@@ -216,13 +216,13 @@ The parameters of the `Edit.create()` method are as follows:
     * text-davinci-edit-001, 
     * code-davinci-edit-001
 
-* `input` (string, required): The text to be edited.
+* `prompt` (string, required): The original text to be edited.
 
-* `instruction` (string, required): The direction to guide the model's editing process. For example, "correct grammar and spelling" or "condense the text".
+* `instruction` (string, required): The directive to guide the model's editing process. For example, "correct grammar and spelling" or "condense the text".
 
 * `temperature` (float, optional): Controls the randomness of the model's output. Higher values result in more random outputs.
 
-* `top_p` (float, optional): Controls the nucleus sampling, which chooses the next token from the top p% of the probability distribution.
+* `top_p` (float, optional): Controls the nucleus sampling, which selects the next token from the top p% of the probability distribution.
 
 ### **3.2. Result Explanation**
 
@@ -248,7 +248,7 @@ The API response will contain the following fields:
 
 * `object` (string): The type of object returned, in this case, "edit".
 * `created` (integer): A timestamp of when the edit was created.
-* `choices` (array): The generated edits, including the edited text and the index of the edit.
+* `choices` (array): The generated edits, which include the edited text and the index of the edit.
     * `index` (integer): The index of the edit. When you set `n` to more than 1, the API will return multiple edits. The index helps identify each distinct edit.
     * `text` (string): The edited text.
-* `usage` (object): Information about the number of tokens used in the API call, including the number of tokens in the input, the number of tokens in the edited text, and the total number of tokens used.
+* `usage` (object): Information about the number of tokens used in the API call, including the number of tokens in the prompt, the number of tokens in the edited text, and the total number of tokens used.
