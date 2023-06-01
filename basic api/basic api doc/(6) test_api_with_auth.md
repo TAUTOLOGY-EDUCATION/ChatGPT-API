@@ -6,22 +6,29 @@ In this guide, we'll walk you through testing the GET and POST methods that requ
 
 ### **Testing the GET Method:**
 
-- Launch Postman and create a new GET request.
-- In the request URL field, type in your API's URL followed by `/get3`. For example, if your API is running on ngrok, the URL will be `http://<your_ngrok_url>/get3`.
-- In the params tab, add your key-value pair. For instance, if you want to send `name`, put `name` in the key and its value in the value field.
-- Click on the Headers tab and add a new key `password` and set its value to `12345678`.
-- Click the Send button to make the request.
+- In Postman, select "GET" from the dropdown list.
+- Enter the following URL, replacing `<your_ngrok_url>` with your actual ngrok URL, and `name` with your actual name:
 
-If your password is correct, you should see a response like `your input name is ` followed by the name you input.
+```
+http://<your_ngrok_url>/get3?name=test
+```
+- Click on the Headers tab and add a new key `password` and set its value to `12345678`.
+- Click the "Send" button.
+
+If your password is correct, you should see a response like `your input name is test`.
 
 ### **Testing the POST Method:**
 
-- Create a new POST request.
-- In the request URL field, type in your API's URL followed by `/post3`.
+- In Postman, select "POST" from the dropdown list.
+- Enter the following URL, replacing `<your_ngrok_url>` with your actual ngrok URL:
+
+```
+http://<your_ngrok_url>/post3
+```
 - Click on the Headers tab and add a new key `password` and set its value to `12345678`.
-- Click on the Body tab, select `raw` and `JSON` format.
+- In the "Body" tab, select "raw" and "JSON" from the dropdown lists.
 - Input your JSON payload. For example: `{"search_name": "pree"}`
-- Click the Send button to make the request.
+- Click the "Send" button.
 
 If your password is correct, you should see a response like `ok your input data is ` followed by the JSON payload you sent.
 
