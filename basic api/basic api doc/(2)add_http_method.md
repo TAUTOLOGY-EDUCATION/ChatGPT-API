@@ -92,3 +92,5 @@ def find_teacher_age_post():
 ```
 
 Now your application can handle both GET and POST requests and perform simple operations with the incoming data. Don't forget to restart your Flask server to apply these changes.
+
+---

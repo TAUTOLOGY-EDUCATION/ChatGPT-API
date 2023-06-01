@@ -16,7 +16,7 @@ Here are the steps to test the endpoints:
 ### **Testing /get1 endpoint:**
 
 - In Postman, select "GET" from the dropdown list.
-- Enter the following URL, replacing `your_ngrok_url` with your actual ngrok URL, and `name` with your actual name:
+- Enter the following URL, replacing `<your_ngrok_url>` with your actual ngrok URL, and `name` with your actual name:
 
 ```
 http://<your_ngrok_url>/get1?name=test
@@ -27,7 +27,7 @@ http://<your_ngrok_url>/get1?name=test
 ### **Testing /get2 endpoint:**
 
 - In Postman, select "GET" from the dropdown list.
-- Enter the following URL, replacing `your_ngrok_url` with your actual ngrok URL, and `name` with the name of the teacher ("pree" or "krin"):
+- Enter the following URL, replacing `<your_ngrok_url>` with your actual ngrok URL, and `name` with the name of the teacher ("pree" or "krin"):
 
 ```
 http://<your_ngrok_url>/get2?name=pree
@@ -38,7 +38,7 @@ http://<your_ngrok_url>/get2?name=pree
 ### **Testing /post1 endpoint:**
 
 - In Postman, select "POST" from the dropdown list.
-- Enter the following URL, replacing `your_ngrok_url` with your actual ngrok URL:
+- Enter the following URL, replacing `<your_ngrok_url>` with your actual ngrok URL:
 
 ```
 http://<your_ngrok_url>/post1
@@ -59,7 +59,7 @@ http://<your_ngrok_url>/post1
 ### **Testing /post2 endpoint:**
 
 - In Postman, select "POST" from the dropdown list.
-- Enter the following URL, replacing `your_ngrok_url` with your actual ngrok URL:
+- Enter the following URL, replacing `<your_ngrok_url>` with your actual ngrok URL:
 
 ```
 http://<your_ngrok_url>/post2
