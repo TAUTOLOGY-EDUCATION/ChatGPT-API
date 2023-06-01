@@ -195,3 +195,60 @@ The API response will contain the following fields:
 
 ### **3.1. How to Use (Python Library)**
 
+```python
+import os
+import openai
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+response = openai.Edit.create(
+  model="text-davinci-edit-001",
+  input="prompt",
+  instruction="instruction",
+  temperature=1,
+  top_p=1
+)
+```
+
+The parameters of the `Edit.create()` method are as follows:
+
+* `model` (string, required): The ID of the model to use, which specifies the version and size of the model used. The following models are supported by the Edit API: 
+    * text-davinci-edit-001, 
+    * code-davinci-edit-001
+
+* `input` (string, required): The text to be edited.
+
+* `instruction` (string, required): The direction to guide the model's editing process. For example, "correct grammar and spelling" or "condense the text".
+
+* `temperature` (float, optional): Controls the randomness of the model's output. Higher values result in more random outputs.
+
+* `top_p` (float, optional): Controls the nucleus sampling, which chooses the next token from the top p% of the probability distribution.
+
+### **3.2. Result Explanation**
+
+The API response will contain the following fields:
+
+```json
+    {
+        "object": "edit",
+        "created": 1589478378,
+        "choices": [
+            {
+            "text": "What day of the week is it?",
+            "index": 0,
+            }
+        ],
+        "usage": {
+            "prompt_tokens": 25,
+            "completion_tokens": 32,
+            "total_tokens": 57
+        }
+    }
+```
+
+* `object` (string): The type of object returned, in this case, "edit".
+* `created` (integer): A timestamp of when the edit was created.
+* `choices` (array): The generated edits, including the edited text and the index of the edit.
+    * `index` (integer): The index of the edit. When you set `n` to more than 1, the API will return multiple edits. The index helps identify each distinct edit.
+    * `text` (string): The edited text.
+* `usage` (object): Information about the number of tokens used in the API call, including the number of tokens in the input, the number of tokens in the edited text, and the total number of tokens used.
