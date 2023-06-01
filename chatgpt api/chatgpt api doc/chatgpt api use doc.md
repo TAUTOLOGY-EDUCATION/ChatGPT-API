@@ -4,9 +4,9 @@
 
 ## **Contents**
 
-- [1. Completion](#1-completion)
-- [2. Chat](#2-chat)
-- [3. Edit](#3-edit)
+- [Completion](#1-completion)
+- [Chat](#2-chat)
+- [Edit](#3-edit)
 
 ## **1. Completion**
 
