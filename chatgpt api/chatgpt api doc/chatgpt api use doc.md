@@ -17,6 +17,7 @@ The `Completion.create()` method in the OpenAI library allows you to utilize the
 ```python
 import openai
 openai.api_key = "YOUR_OPENAI_API_KEY"
+
 openai.Completion.create(
     model="text-davinci-003",
     prompt="your prompt",
@@ -137,8 +138,6 @@ If your API request triggers an error, the response will contain an `error` obje
 
 * `param` (string, optional): If the error relates to a specific parameter in the request, this field will mention that parameter's name.
 
-Sure, I can help you complete the missing sections in your document.
-
 ## **2. Chat**
 
 ### **2.1. How to Use (Python Library)**
@@ -146,15 +145,22 @@ Sure, I can help you complete the missing sections in your document.
 ```python
 import openai
 openai.api_key = "YOUR_OPENAI_API_KEY"
+
 openai.ChatCompletion.create(
     model="gpt-3.5-turbo",
     messages=[
-        {"role": "user", "content": "Who won the football world cup in 2014?"},
+        {
+            "role": "user",
+            "content": "Who won the football world cup in 2014?"
+        },
         {
             "role": "assistant",
-            "content": "Germany won the football world cup in 2014.",
+            "content": "Germany won the football world cup in 2014."
         },
-        {"role": "user", "content": "Where was it played?"},
+        {
+            "role": "user",
+            "content": "Where was it played?"
+        }
     ],
     temperature=1,
     max_tokens=256,
@@ -211,14 +217,16 @@ The API response will contain the following fields:
     "id": "chatcmpl-123",
     "object": "chat.completion",
     "created": 1677652288,
-    "choices": [{
-        "index": 0,
-        "message": {
-        "role": "assistant",
-        "content": "\n\nHello there, how may I assist you today?",
-        },
-        "finish_reason": "stop"
-    }],
+    "choices": [
+        {
+            "index": 0,
+            "message": {
+                "role": "assistant",
+                "content": "\n\nHello there, how may I assist you today?"
+            },
+            "finish_reason": "stop"
+        }
+    ],
     "usage": {
         "prompt_tokens": 9,
         "completion_tokens": 12,
@@ -255,15 +263,14 @@ The `Edit.create()` method in the OpenAI library allows you to utilize the funct
 
 ```python
 import openai
-
 openai.api_key = "YOUR_OPENAI_API_KEY"
 
 response = openai.Edit.create(
-  model="text-davinci-edit-001",
-  prompt="original text",
-  instruction="edit instruction",
-  temperature=1,
-  top_p=1
+    model="text-davinci-edit-001",
+    prompt="original text",
+    instruction="edit instruction",
+    temperature=1,
+    top_p=1
 )
 ```
 
@@ -294,8 +301,8 @@ The API response will contain the following fields:
     "created": 1589478378,
     "choices": [
         {
-        "text": "What day of the week is it?",
-        "index": 0,
+            "text": "What day of the week is it?",
+            "index": 0,
         }
     ],
     "usage": {
