@@ -48,7 +48,6 @@ try:
             prompt="Hello world", model="text-davinci-003"
         )
 except Exception as e:
-    display(e)
     print(f"error type is {type(e)}")
 ```
 
