@@ -1,7 +1,5 @@
 # OpenAI API Guide
 
-**Last updated: June 1, 2023**
-
 ## **Contents**
 
 - [Generate API Key](#generate-api-key)

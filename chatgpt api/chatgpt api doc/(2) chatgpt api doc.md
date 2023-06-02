@@ -1,7 +1,5 @@
 # ChatGPT API Documentation
 
-**Last updated: June 1, 2023**
-
 ## **Contents**
 
 - [Completion](#1-completion)
