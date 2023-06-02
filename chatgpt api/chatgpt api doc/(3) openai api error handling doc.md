@@ -13,11 +13,11 @@ This error occurs when you provide an invalid API key.
 ```python
 import openai
 
+openai.api_key = "invalid open api key"
 try:
-    openai.api_key = 'your_api_key'
-    print(openai.Completion.create(engine="davinci-codex", prompt="Translate this English text to French: '{}'", max_tokens=60))
-except openai.Error as e:
-    print(f"An error occurred: {e}")
+    response = openai.Completion.create(prompt="Hello world", model="text-davinci-003")
+except Exception as e:
+    print(f"error type is {type(e)}")
 ```
 
 ### Invalid Arguments
@@ -25,10 +25,13 @@ except openai.Error as e:
 When the arguments provided to the API call are not valid, you'll receive an error. It may be due to incorrect formatting, missing required fields, or exceeding the limitations.
 
 ```python
+import openai
+
+openai.api_key = "<your_open_api_key>"
 try:
-    response = openai.Completion.create(engine="davinci-codex", prompt="Translate this English text to French: '{}'", max_tokens=70000)
-except openai.Error as e:
-    print(f"An error occurred: {e}")
+    response = openai.Completion.create(prompt="Hello world", model="text-davinci-004")
+except Exception as e:
+    print(f"error type is {type(e)}")
 ```
 
 ### Rate Limit Exceeded
@@ -36,11 +39,17 @@ except openai.Error as e:
 If you exceed your quota of requests per minute, the API will return an error.
 
 ```python
+import openai
+
+openai.api_key = "<your_open_api_key>"
 try:
     for i in range(10000):
-        response = openai.Completion.create(engine="davinci-codex", prompt="Hello, world!", max_tokens=5)
-except openai.Error as e:
-    print(f"An error occurred: {e}")
+        response = openai.Completion.create(
+            prompt="Hello world", model="text-davinci-003"
+        )
+except Exception as e:
+    display(e)
+    print(f"error type is {type(e)}")
 ```
 
 ## Best Practices
@@ -61,40 +70,46 @@ Python allows you to catch specific exceptions. If you're expecting a certain ty
 
 ```python
 import openai
-import time
 import logging
+import time
 
 # Set up logging
-logging.basicConfig(filename='openai_api_errors.log', level=logging.ERROR)
+logging.basicConfig(filename="openai_api_errors.log", level=logging.ERROR)
 
 # Your API key
-openai.api_key = 'your_api_key'
+openai.api_key = "<your_open_api_key>"
 
-def create_prompt():
+
+def completion():
     while True:
         try:
-            response = openai.Completion.create(engine="davinci-codex", prompt="Translate this English text to French: '{}'", max_tokens=60)
+            response = openai.Completion.create(
+                engine="text-davinci-003",
+                prompt="Translate this English text to French: '{}'",
+                max_tokens=60,
+            )
             # If successful, break the loop and return the response
             return response
-        except openai.AuthenticationError:
-            logging.error('AuthenticationError: Invalid API key.')
-            print("There was a problem with your authentication. Please check your API key.")
+        except openai.error.AuthenticationError:
+            logging.error("AuthenticationError: Invalid API key.")
+            print(
+                "There was a problem with your authentication. Please check your API key."
+            )
             break
-        except openai.InvalidRequestError:
-            logging.error('InvalidRequestError: Invalid API request.')
+        except openai.error.InvalidRequestError:
+            logging.error("InvalidRequestError: Invalid API request.")
             print("You made an invalid request. Please check the provided parameters.")
             break
-        except openai.RateLimitError:
-            logging.error('RateLimitError: API request limit exceeded.')
-            print("You've exceeded your rate limit. Waiting for 60 seconds before retrying...")
-            time.sleep(60)  # wait for 60 seconds before next API call
+        except openai.error.RateLimitError:
+            logging.error("RateLimitError: API request limit exceeded.")
+            print(
+                "You've exceeded your rate limit. Waiting for 60 seconds before retrying..."
+            )
+            time.sleep(20)  # wait for 20 seconds before next API call
         except Exception as e:
-            logging.error(f'Unexpected error: {str(e)}')
+            logging.error(f"Unexpected error: {str(e)}")
             print("An unexpected error occurred. Please check the application logs.")
             break
-
-# Call the function
-create_prompt()
 ```
 
 `create_prompt()` will keep trying to execute the API call until it's successful. If it encounters a `RateLimitError`, it will wait 60 seconds before retrying. 

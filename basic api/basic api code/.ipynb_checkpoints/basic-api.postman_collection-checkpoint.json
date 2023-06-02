@@ -1,0 +1,145 @@
+{
+	"info": {
+		"_postman_id": "7d4e7c93-972f-4e3d-b181-6e6f4f176a42",
+		"name": "Basic-API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "6387938"
+	},
+	"item": [
+		{
+			"name": "get1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{your_ngrok_url}}/get1?name=test",
+					"host": [
+						"{{your_ngrok_url}}"
+					],
+					"path": [
+						"get1"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "test"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{your_ngrok_url}}/get2?name=pree",
+					"host": [
+						"{{your_ngrok_url}}"
+					],
+					"path": [
+						"get2"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "pree"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"test\",\r\n    \"age\": 30\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{your_ngrok_url}}/post1"
+			},
+			"response": []
+		},
+		{
+			"name": "post2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"search_name\": \"krin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{your_ngrok_url}}/post2"
+			},
+			"response": []
+		},
+		{
+			"name": "get3",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "password",
+						"value": "12345678",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{your_ngrok_url}}/get3?name=test",
+					"host": [
+						"{{your_ngrok_url}}"
+					],
+					"path": [
+						"get3"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "test"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post3",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "password",
+						"value": "12345678",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"search_name\": \"pree\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{your_ngrok_url}}/post3"
+			},
+			"response": []
+		}
+	]
+}
