@@ -14,11 +14,11 @@ The `Completion.create()` method in the OpenAI library allows you to utilize the
 
 ```python
 import openai
-openai.api_key = "YOUR_OPENAI_API_KEY"
+openai.api_key = "<your_open_api_key>"
 
 openai.Completion.create(
     model="text-davinci-003",
-    prompt="your prompt",
+    prompt="Say this is a test",
     temperature=1,
     max_tokens=256,
     top_p=1,
@@ -122,23 +122,14 @@ The API response will contain the following fields:
 
 ```python
 import openai
-openai.api_key = "YOUR_OPENAI_API_KEY"
+openai.api_key = "<your_open_api_key>"
 
 openai.ChatCompletion.create(
     model="gpt-3.5-turbo",
     messages=[
-        {
-            "role": "user",
-            "content": "Who won the football world cup in 2014?"
-        },
-        {
-            "role": "assistant",
-            "content": "Germany won the football world cup in 2014."
-        },
-        {
-            "role": "user",
-            "content": "Where was it played?"
-        }
+        {"role": "user", "content": "Who won the football world cup in 2014?"},
+        {"role": "assistant", "content": "Germany won the football world cup in 2014."},
+        {"role": "user", "content": "Where was it played?"},
     ],
     temperature=1,
     max_tokens=256,
@@ -200,7 +191,7 @@ The API response will contain the following fields:
             "index": 0,
             "message": {
                 "role": "assistant",
-                "content": "\n\nHello there, how may I assist you today?"
+                "content": "The 2014 FIFA World Cup was held in Brazil."
             },
             "finish_reason": "stop"
         }
@@ -241,7 +232,7 @@ The `Edit.create()` method in the OpenAI library allows you to utilize the funct
 
 ```python
 import openai
-openai.api_key = "YOUR_OPENAI_API_KEY"
+openai.api_key = "<your_open_api_key>"
 
 openai.Edit.create(
     model="text-davinci-edit-001",
