@@ -118,26 +118,6 @@ The API response will contain the following fields:
 
 * `usage` (object): Information about the number of tokens used in the API call, including the number of tokens in the prompt, the number of tokens in the completion, and the total number of tokens used.
 
-### **1.3. Error Handling**
-
-If your API request triggers an error, the response will contain an `error` object with more details. For example:
-
-```json
-{
-    "error": {
-        "code": "validation_error",
-        "message": "max_tokens parameter is too high. Value must be less than or equal to 4096.",
-        "param": "max_tokens"
-    }
-}
-```
-
-* `code` (string): A short, machine-readable string that specifies the type of error.
-
-* `message` (string): A human-readable string detailing the error.
-
-* `param` (string, optional): If the error relates to a specific parameter in the request, this field will mention that parameter's name.
-
 ## **2. Chat**
 
 ### **2.1. How to Use (Python Library)**
@@ -265,12 +245,10 @@ The `Edit.create()` method in the OpenAI library allows you to utilize the funct
 import openai
 openai.api_key = "YOUR_OPENAI_API_KEY"
 
-response = openai.Edit.create(
+openai.Edit.create(
     model="text-davinci-edit-001",
-    prompt="original text",
-    instruction="edit instruction",
-    temperature=1,
-    top_p=1
+    input="What day of the wek is it?",
+    instruction="Fix the spelling mistakes"
 )
 ```
 
