@@ -111,7 +111,7 @@ def completion():
             break
 ```
 
-`create_prompt()` will keep trying to execute the API call until it's successful. If it encounters a `RateLimitError`, it will wait 60 seconds before retrying. 
+`create_prompt()` will keep trying to execute the API call until it's successful. If it encounters a `RateLimitError`, it will wait 20 seconds before retrying. 
 
 For other errors (`AuthenticationError`, `InvalidRequestError`, and unexpected exceptions), the function will log the error, print an error message, and then break the loop to stop further attempts. 
 
