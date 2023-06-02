@@ -3,6 +3,7 @@
 ## Table of Contents
 - [Common Errors](#common-errors)
 - [Best Practices](#best-practices)
+- [OpenAI Error Codes Reference](#openai-error-codes-reference)
 
 ## Common Errors
 
@@ -78,7 +79,6 @@ logging.basicConfig(filename="openai_api_errors.log", level=logging.ERROR)
 # Your API key
 openai.api_key = "<your_open_api_key>"
 
-
 def completion():
     while True:
         try:
@@ -116,3 +116,7 @@ def completion():
 For other errors (`AuthenticationError`, `InvalidRequestError`, and unexpected exceptions), the function will log the error, print an error message, and then break the loop to stop further attempts. 
 
 Please remember that endlessly retrying after a `RateLimitError` may not be the best practice in a production environment as it may lead to API abuse. It's advisable to have a maximum retry limit and possibly an exponential backoff between retries.
+
+## OpenAI Error Codes Reference
+
+For more detailed information about the error codes and their meaning, you can refer to OpenAI's official [API Errors Documentation](https://platform.openai.com/docs/guides/error-codes/api-errors). This reference will provide deeper insights into understanding the specific types of errors and how to mitigate them.
