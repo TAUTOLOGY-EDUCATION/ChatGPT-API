@@ -45,14 +45,14 @@ Exceeding these limits will result in a `429 Too Many Requests` error.
 The pricing for different models of ChatGPT is as follows:
 
 | Model       | Context Size | Prompt Price  | Completion Price |
-| ----------- | ------------ | ------------  | --------------   |
+| ----------- | ----------- | ------------  | --------------   |
 | GPT-4       | 8K          | $0.03 / 1K tokens  | $0.06 / 1K tokens   |
 | GPT-4       | 32K         | $0.06 / 1K tokens  | $0.12 / 1K tokens   |
-| gpt-3.5-turbo | N/A      | $0.002 / 1K tokens ||
-| Ada         | N/A         | $0.0004 / 1K tokens ||
-| Babbage     | N/A         | $0.0005 / 1K tokens ||
-| Curie       | N/A         | $0.0020 / 1K tokens ||
-| Davinci     | N/A         | $0.0200 / 1K tokens ||
+| gpt-3.5-turbo |           | $0.002 / 1K tokens ||
+| Ada         |             | $0.0004 / 1K tokens ||
+| Babbage     |             | $0.0005 / 1K tokens ||
+| Curie       |             | $0.0020 / 1K tokens ||
+| Davinci     |             | $0.0200 / 1K tokens ||
 
 Please visit OpenAI's [pricing page](https://openai.com/pricing) for the most accurate and up-to-date information.
 
