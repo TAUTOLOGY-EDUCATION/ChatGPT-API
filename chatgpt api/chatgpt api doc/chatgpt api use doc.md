@@ -15,9 +15,8 @@
 The `Completion.create()` method in the OpenAI library allows you to utilize the functionality of the Completion API. Here's a basic usage example:
 
 ```python
-import os
 import openai
-openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = "YOUR_OPENAI_API_KEY"
 openai.Completion.create(
     model="text-davinci-003",
     prompt="your prompt",
@@ -26,25 +25,47 @@ openai.Completion.create(
     top_p=1,
     frequency_penalty=0,
     presence_penalty=0,
-    stop=["stop_word_1", "stop_word_2"]
 )
 ```
 
 The parameters of the `Completion.create()` method are as follows:
 
-* `model` (string, required): The ID of the model to use, which specifies the version and size of the model used. The following models are supported by the Completion API:
-    * text-davinci-003
-    * text-davinci-002
-    * text-curie-001
-    * text-babbage-001
-    * text-ada-001
-* `prompt` (string, required): The initial text to be extended or completed.
-* `max_tokens` (integer, optional): The maximum length of the generated text. If not provided, the model will decide the number of tokens to generate.
-* `temperature` (float, optional): This controls the randomness of the model's output. Higher values result in more random outputs.
-* `top_p` (float, optional): This controls the nucleus sampling, which selects the next token from the top p% of the probability distribution.
-* `frequency_penalty` (float, optional): This penalizes new tokens based on their frequency of occurrence. The value can range from -2 to 2, with negative values favoring less common tokens, and positive values favoring more common ones.
-* `presence_penalty` (float, optional): This penalizes new tokens based on whether they are novel in the given context. The value can range from -2 to 2, with negative values favoring the use of new tokens, and positive values favoring existing ones.
-* `stop` (array of strings, optional): This is a list of tokens that will make the model stop generating further tokens.
+- `model` (string, Required): ID of the model to be used. The following models are supported by the Completion API:
+    - text-davinci-003
+    - text-davinci-002
+    - text-curie-001
+    - text-babbage-001
+    - text-ada-001
+
+- `prompt` (string/array, Optional, Defaults to null): The prompt(s) for generating completions.
+
+- `suffix` (string, Optional, Defaults to null): Suffix after completion of inserted text.
+
+- `max_tokens` (integer, Optional, Defaults to 16): Max tokens to generate in completion.
+
+- `temperature` (number, Optional, Defaults to 1): Sampling temperature, between 0 and 2, for randomness control.
+
+- `top_p` (number, Optional, Defaults to 1): Nucleus sampling parameter.
+
+- `n` (integer, Optional, Defaults to 1): Number of completions to generate for each prompt.
+
+- `stream` (boolean, Optional, Defaults to false): For streaming back partial progress.
+
+- `logprobs` (integer, Optional, Defaults to null): For including the log probabilities on the most likely tokens.
+
+- `echo` (boolean, Optional, Defaults to false): Echo back the prompt in addition to the completion.
+
+- `stop` (string/array, Optional, Defaults to null): Sequences where the API will stop generating tokens.
+
+- `presence_penalty` (number, Optional, Defaults to 0): Penalty for new tokens based on their appearance in the text.
+
+- `frequency_penalty` (number, Optional, Defaults to 0): Penalty for new tokens based on their existing frequency.
+
+- `best_of` (integer, Optional, Defaults to 1): Generates best completions server-side and returns the best one.
+
+- `logit_bias` (map, Optional, Defaults to null): Modify the likelihood of specified tokens appearing in the completion.
+
+- `user` (string, Optional): A unique identifier representing the end-user.
 
 ### **1.2. Result Explanation**
 
@@ -73,16 +94,27 @@ The API response will contain the following fields:
 ```
 
 * `id` (string): A unique identifier for the completion.
+
 * `object` (string): The type of object returned, in this case, "text_completion".
+
 * `created` (integer): A timestamp of when the completion was created.
+
 * `model` (string): The ID of the model used for this completion.
+
 * `choices` (array): The generated completions. It includes the generated text, the index of the completion, the log probabilities, and the reason why the model stopped generating.
+   
     * `text` (string): The generated completion. This is the text that the model has generated as a completion of your prompt.
+  
     * `index` (integer): The index of the completion. When you set `n` to more than 1, the API will return multiple completions. The index helps identify each distinct completion.
+  
     * `logprobs` (object or null): If you have set the `logprobs` parameter in your request, this will be an object showing the log probabilities of the tokens generated. Otherwise, it will be null.
+  
     * `finish_reason` (string): This indicates why the model stopped generating additional tokens. Possible values are:
+ 
         * `stop`: The model reached a token that you specified in the `stop` parameter.
+        
         * `length`: The model reached the maximum token limit you set with the `max_tokens` parameter.
+
 * `usage` (object): Information about the number of tokens used in the API call, including the number of tokens in the prompt, the number of tokens in the completion, and the total number of tokens used.
 
 ### **1.3. Error Handling**
@@ -100,7 +132,9 @@ If your API request triggers an error, the response will contain an `error` obje
 ```
 
 * `code` (string): A short, machine-readable string that specifies the type of error.
+
 * `message` (string): A human-readable string detailing the error.
+
 * `param` (string, optional): If the error relates to a specific parameter in the request, this field will mention that parameter's name.
 
 Sure, I can help you complete the missing sections in your document.
@@ -110,9 +144,8 @@ Sure, I can help you complete the missing sections in your document.
 ### **2.1. How to Use (Python Library)**
 
 ```python
-import os
 import openai
-openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = "YOUR_OPENAI_API_KEY"
 openai.ChatCompletion.create(
     model="gpt-3.5-turbo",
     messages=[
@@ -133,60 +166,85 @@ openai.ChatCompletion.create(
 
 The parameters of the `ChatCompletion.create()` method are as follows:
 
-* `model` (string, required): The ID of the model to use, which specifies the version and size of the model used. The following models are supported by the ChatCompletion API:
-    * gpt-4
-    * gpt-4-0314
-    * gpt-4-32k
-    * gpt-4-32k-0314
-    * gpt-3.5-turbo
-    * gpt-3.5-turbo-0301
+- `model` (string, Required): The ID of the model used. Refer to the model endpoint compatibility table for model details. The following models are supported by the ChatCompletion API:
+    - gpt-4
+    - gpt-4-0314
+    - gpt-4-32k
+    - gpt-4-32k-0314
+    - gpt-3.5-turbo
+    - gpt-3.5-turbo-0301
 
-* `messages` (array, required): An array of message objects. Each object should have a role (either "system", "user", or "assistant") and content (the content of the message). The messages must be passed in the order they occurred.
+- `messages` (array, Required): An array listing the conversation history.
 
-* `temperature` (float, optional): Controls the randomness of the model's output. Higher values result in more random outputs.
+    - `role` (string, Required): The author's role for this message. Possible values include 'system', 'user', or 'assistant'.
 
-* `max_tokens` (integer, optional): The maximum length of the generated text. If not provided, the model will decide how many tokens to generate.
+    - `content` (string, Required): The content of the message.
 
-* `top_p` (float, optional): Controls the nucleus sampling, which chooses the next token from the top p% of the probability distribution.
+    - `name` (string, Optional): The author's name of this message. Acceptable characters include a-z, A-Z, 0-9, and underscores. Maximum length is 64 characters.
 
-* `frequency_penalty` (float, optional): Penalizes new tokens based on their frequency of occurrence. The value can range from -2 to 2, with negative values increasing the frequency of less common tokens, and positive values decreasing it.
+- `temperature` (number, Optional, Defaults to 1): Sampling temperature between 0 and 2 for randomness control. Modify this or 'top_p', but not both.
 
-* `presence_penalty` (float, optional): Penalizes new tokens based on whether they are novel in the given context or not. The value can range from -2 to 2, with negative values making the model more likely to use new tokens, and positive values making it more likely to use existing tokens.
+- `top_p` (number, Optional, Defaults to 1): Parameter for nucleus sampling. The model considers tokens with top_p probability mass. Modify this or 'temperature', but not both.
+
+- `n` (integer, Optional, Defaults to 1): The number of chat completion choices generated for each input message.
+
+- `stream` (boolean, Optional, Defaults to false): If set, partial message deltas will be sent, similar to ChatGPT. Tokens will be sent as data-only server-sent events as they become available.
+
+- `stop` (string/array, Optional, Defaults to null): Defines up to 4 sequences where the API will stop generating further tokens.
+
+- `max_tokens` (integer, Optional, Defaults to inf): The maximum number of tokens to generate in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.
+
+- `presence_penalty` (number, Optional, Defaults to 0): A penalty between -2.0 and 2.0 for new tokens based on their appearance in the text.
+
+- `frequency_penalty` (number, Optional, Defaults to 0): A penalty between -2.0 and 2.0 for new tokens based on their existing frequency.
+
+- `logit_bias` (map, Optional, Defaults to null): Adjusts the likelihood of specific tokens appearing in the completion. Accepts a json object mapping tokens (by their token ID in the tokenizer) to a bias value from -100 to 100.
+
+- `user` (string, Optional): A unique identifier representing the end-user. This can help OpenAI to monitor and detect abuse.
 
 ### **2.2. Result Explanation**
 
 The API response will contain the following fields:
 
 ```json
-    {
-        "id": "chatcmpl-123",
-        "object": "chat.completion",
-        "created": 1677652288,
-        "choices": [{
-            "index": 0,
-            "message": {
-            "role": "assistant",
-            "content": "\n\nHello there, how may I assist you today?",
-            },
-            "finish_reason": "stop"
-        }],
-        "usage": {
-            "prompt_tokens": 9,
-            "completion_tokens": 12,
-            "total_tokens": 21
-        }
+{
+    "id": "chatcmpl-123",
+    "object": "chat.completion",
+    "created": 1677652288,
+    "choices": [{
+        "index": 0,
+        "message": {
+        "role": "assistant",
+        "content": "\n\nHello there, how may I assist you today?",
+        },
+        "finish_reason": "stop"
+    }],
+    "usage": {
+        "prompt_tokens": 9,
+        "completion_tokens": 12,
+        "total_tokens": 21
     }
+}
 ```
 
 * `id` (string): A unique identifier for the completion.
+
 * `object` (string): The type of object returned, in this case, "chat.completion".
+
 * `created` (integer): A timestamp of when the completion was created.
+
 * `choices` (array): The generated completions, including the generated text, the index of the completion, and the reason why the model stopped generating.
+
     * `index` (integer): The index of the completion. When you set `n` to more than 1, the API will return multiple completions. The index helps identify each distinct completion.
+
     * `message` (object): The message object that includes the 'role' and 'content'. The 'role' can be either 'system', 'user', or 'assistant', and 'content' is the actual content of the message.
+
     * `finish_reason` (string): This indicates why the model stopped generating additional tokens. Possible values are:
+
         * `stop`: The model reached a token that you specified in the `stop` parameter.
+
         * `length`: The model reached the maximum token limit you set with the `max_tokens` parameter.
+
 * `usage` (object): Information about the number of tokens used in the API call, including the number of tokens in the prompt, the number of tokens in the completion, and the total number of tokens used.
 
 ## **3. Edit**
@@ -196,10 +254,9 @@ The API response will contain the following fields:
 The `Edit.create()` method in the OpenAI library allows you to utilize the functionality of the Edit API. Here's a basic usage example:
 
 ```python
-import os
 import openai
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = "YOUR_OPENAI_API_KEY"
 
 response = openai.Edit.create(
   model="text-davinci-edit-001",
@@ -213,42 +270,50 @@ response = openai.Edit.create(
 The parameters of the `Edit.create()` method are as follows:
 
 * `model` (string, required): The ID of the model to use, which specifies the version and size of the model used. The following models are supported by the Edit API: 
-    * text-davinci-edit-001, 
-    * code-davinci-edit-001
 
-* `prompt` (string, required): The original text to be edited.
+    - text-davinci-edit-001, 
+    - code-davinci-edit-001
 
-* `instruction` (string, required): The directive to guide the model's editing process. For example, "correct grammar and spelling" or "condense the text".
+- `input` (string, Optional, Defaults to ''): The initial text that serves as a starting point for the edit.
 
-* `temperature` (float, optional): Controls the randomness of the model's output. Higher values result in more random outputs.
+- `instruction` (string, Required): The directive that instructs the model how to modify the input text.
 
-* `top_p` (float, optional): Controls the nucleus sampling, which selects the next token from the top p% of the probability distribution.
+- `n` (integer, Optional, Defaults to 1): The number of edits to produce for the input and instruction.
+
+- `temperature` (number, Optional, Defaults to 1): Sampling temperature between 0 and 2. Higher values (like 0.8) result in more random output, whereas lower values (like 0.2) make the output more focused and deterministic. It's recommended to alter this or 'top_p', but not both.
+
+- `top_p` (number, Optional, Defaults to 1): Parameter for nucleus sampling. The model considers tokens with top_p probability mass. For example, 0.1 means only the tokens comprising the top 10% probability mass are considered. It's recommended to alter this or 'temperature', but not both.
 
 ### **3.2. Result Explanation**
 
 The API response will contain the following fields:
 
 ```json
-    {
-        "object": "edit",
-        "created": 1589478378,
-        "choices": [
-            {
-            "text": "What day of the week is it?",
-            "index": 0,
-            }
-        ],
-        "usage": {
-            "prompt_tokens": 25,
-            "completion_tokens": 32,
-            "total_tokens": 57
+{
+    "object": "edit",
+    "created": 1589478378,
+    "choices": [
+        {
+        "text": "What day of the week is it?",
+        "index": 0,
         }
+    ],
+    "usage": {
+        "prompt_tokens": 25,
+        "completion_tokens": 32,
+        "total_tokens": 57
     }
+}
 ```
 
 * `object` (string): The type of object returned, in this case, "edit".
+
 * `created` (integer): A timestamp of when the edit was created.
+
 * `choices` (array): The generated edits, which include the edited text and the index of the edit.
+    
     * `index` (integer): The index of the edit. When you set `n` to more than 1, the API will return multiple edits. The index helps identify each distinct edit.
+    
     * `text` (string): The edited text.
+
 * `usage` (object): Information about the number of tokens used in the API call, including the number of tokens in the prompt, the number of tokens in the edited text, and the total number of tokens used.

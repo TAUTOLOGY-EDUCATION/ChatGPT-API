@@ -6,25 +6,25 @@ Before testing the Flask application, you'll need to have Jupyter Notebook and P
 
 You can install Jupyter Notebook using pip, the Python package installer. Open your terminal and type the following command:
 
-    ```bash
-    pip install jupyter
-    ```
+```bash
+pip install jupyter
+```
 
 ## 2. **Installing requests module**: 
 
 Python's `requests` module is a simple HTTP library for sending HTTP requests. It abstracts the complexities of making requests behind a beautiful, simple API so that you can focus on interacting with services and consuming data in your application. To install the requests module, open your terminal and type the following command:
 
-    ```bash
-    pip install requests
-    ```
+```bash
+pip install requests
+```
 
 ## 3. **Start Jupyter Notebook**: 
 
 You can start Jupyter Notebook by typing `jupyter notebook` in your terminal. This should open a new tab in your default web browser that shows the Notebook Dashboard.
 
-    ```bash
-    jupyter notebook
-    ```
+```bash
+jupyter notebook
+```
 
 ## 4. **Testing with Jupyter**: 
 
