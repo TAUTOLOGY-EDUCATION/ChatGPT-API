@@ -116,6 +116,30 @@ The API response will contain the following fields:
 
 * `usage` (object): Information about the number of tokens used in the API call, including the number of tokens in the prompt, the number of tokens in the completion, and the total number of tokens used.
 
+### **1.3. Ending Handling**
+
+When using the Completion API, it's essential to manage and handle different ending reasons to ensure the appropriate continuation of the text generation.
+
+The `finish_reason` can be either `stop` or `length`. If the `finish_reason` is `length`, it means that the text generation was ended by reaching the maximum token limit. In this case, you might want to call the completion API again to continue the text generation.
+
+Here is an example of how you can do it:
+
+```python
+import openai
+
+openai.api_key = "<your_open_api_key>"
+prompt = "Hello world"
+response = openai.Completion.create(prompt=prompt, model="text-davinci-004")
+
+if response.choices[0].finish_reason == "length":
+    print("The text generation was ended by reaching the maximum token limit. Generating more...")
+    # Append the generated text to the prompt
+    new_prompt = prompt + response.choices[0].text
+    # Create a new request with the new prompt
+    new_response = openai.Completion.create(prompt=new_prompt, model="text-davinci-004")
+    print(new_response.choices[0].text)
+```
+
 ## **2. Chat**
 
 ### **2.1. How to Use (Python Library)**
@@ -223,6 +247,37 @@ The API response will contain the following fields:
         * `length`: The model reached the maximum token limit you set with the `max_tokens` parameter.
 
 * `usage` (object): Information about the number of tokens used in the API call, including the number of tokens in the prompt, the number of tokens in the completion, and the total number of tokens used.
+
+### **2.3. Ending Handling**
+
+Just like with the Completion API, the `finish_reason` in the chat model response can be `stop` or `length`. If the `finish_reason` is `length`, this means that the chat was cut off because it reached the maximum token limit.
+
+In this case, you might want to call the chat API again to continue the conversation. Here is how you can do it:
+
+```python
+import openai
+
+openai.api_key = "<your_open_api_key>"
+messages=[
+    {"role": "system", "content": "You are a helpful assistant."},
+    {"role": "user", "content": "Who won the world series in 2020?"},
+]
+response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages)
+
+if response['choices'][0]['finish_reason'] == "length":
+    print("The chat was ended by reaching the maximum token limit. Continuing the conversation...")
+    # Append the last assistant message to the messages
+    new_message_assistant = {"role": "assistant", "content": response['choices'][0]['message']['content']}
+    messages.append(new_message_assistant)
+    # Append a new user message to the messages
+    new_message_user = {"role": "user", "content": "go on"}
+    messages.append(new_message_user)
+    # Create a new request with the new messages
+    new_response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages)
+    print(new_response['choices'][0]['message']['content'])
+```
+
+By managing and handling the `finish_reason` effectively, you can control the text and chat generation more effectively and ensure a seamless continuation even when the maximum token limit is reached.
 
 ## **3. Edit**
 
