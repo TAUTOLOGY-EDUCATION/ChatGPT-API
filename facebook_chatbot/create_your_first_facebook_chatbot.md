@@ -104,10 +104,9 @@ def listen():
         payload = request.json
         event = payload["entry"][0]["messaging"]
         for x in event:
-            if is_user_message(x):
-                text = x["message"]["text"]
-                sender_id = x["sender"]["id"]
-                send_message(sender_id, text)
+            text = x["message"]["text"]
+            sender_id = x["sender"]["id"]
+            send_message(sender_id, text)
         return "ok"
 ```
 
@@ -140,13 +139,5 @@ def send_message(recipient_id, text):
 ```
 
 Replace `<Your Page Access Token>` with your Facebook page access token. The `recipient_id` is the user's ID who will receive the message, and `text` is the message you want to send.
-
-To complete the code, you'll also need the `is_user_message()` function:
-
-```python
-def is_user_message(message):
-    """Check if the message is a message from the user"""
-    return ("message" in message) and ("text" in message["message"])
-```
 
 Now, whenever a user sends a message or clicks a postback button in your chatbot, Facebook will send an HTTP POST request to your webhook. The `send_message` function can respond to these interactions. Remember to handle exceptions to ensure a smooth user experience.
