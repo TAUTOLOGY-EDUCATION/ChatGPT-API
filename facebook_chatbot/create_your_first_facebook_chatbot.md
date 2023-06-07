@@ -1,52 +1,55 @@
-# Create your first Facebook Chatbot
+# Create Your First Facebook Chatbot
 
-This guide will walk you through the steps of creating a simple chatbot on Facebook using the Facebook Messenger Platform.
+This guide will walk you through the process of creating a simple Facebook chatbot using the Facebook Messenger Platform, Python, Flask, and ngrok.
 
 ## 1. **Create a Facebook Page**
 
-You'll need a Facebook page to attach the chatbot to. If you already have one, you can skip this step. If not, you can create one by following the steps:
+To attach the chatbot, you will need a Facebook page. If you already have one, you can skip this step. If not, follow these steps:
 
-- Go to [Facebook Pages](https://www.facebook.com/pages/create/)
-- Click to choose a Page type
+- Visit [Facebook Pages](https://www.facebook.com/pages/create/)
+- Choose a Page type
 - Fill out the required information
-- Click Create Page
+- Click "Create Page"
 
 ## 2. **Create a Developer Account**
 
-To create a chatbot, you need a developer account on Facebook.
+To build a chatbot, you'll need a developer account on Facebook:
 
-- Visit [Facebook Developers](https://developers.facebook.com/)
-- Click "Get Started" in the top right corner
+- Go to [Facebook Developers](https://developers.facebook.com/)
+- Click "Get Started" in the upper right corner
 - Follow the prompts to register as a developer
 
 ## 3. **Create an App**
 
-- From the [Developer Dashboard](https://developers.facebook.com/apps/), click "Create App" 
+- Visit your [Developer Dashboard](https://developers.facebook.com/apps/), click "Create App"
 - Select "Business" as the purpose of your app and click "Continue"
-- Fill in the details about your app and then click "Create App"
+- Fill out your app details and click "Create App"
 
 ## 4. **Generate a Page Messenger Token**
 
-- Go to your App Dashboard
-- Click "Set Up" in the Messenger section
-- Select the page you want to generate a token for in the dropdown
+- Navigate to your App Dashboard
+- In the Messenger section, click "Set Up"
+- In "Access Tokens", click "Add or Remove Pages"
+- Choose the page you want to generate a token for from the dropdown menu
 - Click "Generate Token"
-- Copy the generated token and keep it safe, as it will not be shown again
+- Copy and securely store the generated token as it will not be shown again
 
-## 5. **Verify Webhook**
+## 5. **Create a Flask App and Verify Webhook**
 
-To communicate with the Facebook server, you'll need to set up a webhook. This involves creating a Flask endpoint to accept these webhook events:
+To communicate with Facebook servers, you'll need to set up a webhook. This involves creating a Flask endpoint to accept these webhook events:
 
 ```python
-@app.route("/webhook", methods=["GET","POST"])
+from flask import Flask, request
+
+app = Flask(__name__)
+
+@app.route("/webhook", methods=["GET"])
 def listen():
-    print(f"calling webhook method : {request.method}")
-    """This is the main function flask uses to 
+    print(f"Calling webhook method : {request.method}")
+    """This is the main function Flask uses to 
     listen at the `/webhook` endpoint"""
     if request.method == "GET":
         return verify_webhook(request)
-    if request.method == "POST":
-        return send_message(sender, response)
 ```
 
 Additionally, here's a sample `verify_webhook` function:
@@ -54,7 +57,7 @@ Additionally, here's a sample `verify_webhook` function:
 ```python
 def verify_webhook(req):
     print("verify_webhook running")
-    calling_verify_token= req.args.get("hub.verify_token")
+    calling_verify_token = req.args.get("hub.verify_token")
     print(f"calling_verify_token : {calling_verify_token}")
     fb_verify_token = "<Your Verification Token>"
     if calling_verify_token == fb_verify_token:
@@ -64,36 +67,58 @@ def verify_webhook(req):
         return "incorrect"
 ```
 
-Please replace `"<Your Verification Token>"` with your actual Facebook verification token.
+Replace `"<Your Verification Token>"` with your actual Facebook verification token.
 
-- Use ngrok or a similar service to create a secure tunnel to your webhook.
-- In your app settings on Facebook, set the Callback URL to your ngrok URL + /webhook.
-- The verify token should be the same one you put in your `verify_webhook` function.
-- After you set the Callback URL and Verify Token, click "Verify and Save".
+- Use ngrok to create a secure tunnel to your webhook
+- In your Facebook app settings, set the Callback URL to your ngrok URL + /webhook
+- The verify token should be the same one you put in your `verify_webhook` function
+- After setting the Callback URL and Verify Token, click "Verify and Save"
 
 ## 6. **Edit Page Subscriptions**
 
-You'll need to set up your page subscription to receive messages and postbacks:
+To receive messages and postbacks, you need to set up your page subscription:
 
-- Go back to the Messenger settings in your app dashboard
+- Return to the Messenger settings in your app dashboard
 - Under "Webhooks", click "Edit Callback URL"
-- Enter your Callback URL and Verify Token again
+- Re-enter your Callback URL and Verify Token
 - In the "Subscription Fields" section, select "messages" and "messaging_postbacks"
 - Click "Save"
 
 Now, whenever a user sends a message or clicks a postback button in your chatbot, Facebook will send an HTTP POST request to your webhook.
 
-Congratulations! You have now successfully created a Facebook Chatbot. The next steps would be to enhance the bot's functionality by creating responses to user inputs.
-
-Sure, here's how you could incorporate the `send_message` function:
-
 ## 7. **Sending a Response Message**
 
-After the webhook verification, the Flask app should handle the incoming messages and postbacks. The example `send_message` function shown below sends a response back to Facebook.
+After the webhook verification, the Flask app should handle incoming messages and postbacks. Below is an example of a `send_message` function that sends a response back to Facebook by modifying the `listen()` function:
+
+```python
+import requests
+
+@app.route("/webhook", methods=["GET","POST"])
+def listen():
+    print(f"Calling webhook method : {request.method}")
+    """This is the main function Flask uses to 
+    listen at the `/webhook` endpoint"""
+    if request.method == "GET":
+        return verify_webhook(request)
+    if request.method == "POST":
+        payload = request.json
+        event = payload["entry"][0]["messaging"]
+        for x in event:
+            if is_user_message(x):
+                text = x["message"]["text"]
+                sender_id = x["sender"]["id"]
+                send_message(sender_id, text)
+        return "ok"
+```
+
+Here's the `send_message` function:
 
 ```python
 def send_message(recipient_id, text):
     """Send a response to Facebook"""
+    fb_page_access_token = "<Your Page Access Token>"
+    fb_api_url = "https://graph.facebook.com/v2.6/"
+
     payload = {
         "message": {
             "text": text
@@ -114,8 +139,14 @@ def send_message(recipient_id, text):
     return response.json()
 ```
 
-In this function, replace `fb_page_access_token` and `fb_api_url` with your Facebook page access token and the API URL, respectively. The `recipient_id` parameter is the user's id who will receive the message, and `text` is the message that you want to send.
+Replace `<Your Page Access Token>` with your Facebook page access token. The `recipient_id` is the user's ID who will receive the message, and `text` is the message you want to send.
 
-Now, whenever a user sends a message or clicks a postback button in your chatbot, Facebook will send an HTTP POST request to your webhook. The `send_message` function can be used to respond to these interactions. Remember to handle exceptions accordingly to ensure a smooth user experience.
+To complete the code, you'll also need the `is_user_message()` function:
 
-Congratulations! You have now successfully created a Facebook Chatbot that can send and receive messages. The next steps would be to enhance the bot's functionality by creating more complex responses and handling more types of user inputs.
+```python
+def is_user_message(message):
+    """Check if the message is a message from the user"""
+    return ("message" in message) and ("text" in message["message"])
+```
+
+Now, whenever a user sends a message or clicks a postback button in your chatbot, Facebook will send an HTTP POST request to your webhook. The `send_message` function can respond to these interactions. Remember to handle exceptions to ensure a smooth user experience.
