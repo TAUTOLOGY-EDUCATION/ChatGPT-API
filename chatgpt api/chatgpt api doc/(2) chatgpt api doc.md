@@ -126,18 +126,24 @@ Here is an example of how you can do it:
 
 ```python
 import openai
-
 openai.api_key = "<your_open_api_key>"
+
 prompt = "Hello world"
-response = openai.Completion.create(prompt=prompt, model="text-davinci-004")
+response = openai.Completion.create(
+    prompt=prompt,
+    max_tokens=10,
+    model="text-davinci-003",
+)
+
+print(f"response:{response.choices[0].text}")
 
 if response.choices[0].finish_reason == "length":
-    print("The text generation was ended by reaching the maximum token limit. Generating more...")
     # Append the generated text to the prompt
     new_prompt = prompt + response.choices[0].text
     # Create a new request with the new prompt
-    new_response = openai.Completion.create(prompt=new_prompt, model="text-davinci-004")
-    print(new_response.choices[0].text)
+    new_response = openai.Completion.create(prompt=new_prompt, model="text-davinci-003")
+
+    print(f"new_response:{new_response.choices[0].text}")
 ```
 
 ## **2. Chat**
@@ -256,25 +262,39 @@ In this case, you might want to call the chat API again to continue the conversa
 
 ```python
 import openai
-
 openai.api_key = "<your_open_api_key>"
-messages=[
+
+messages = [
     {"role": "system", "content": "You are a helpful assistant."},
     {"role": "user", "content": "Who won the world series in 2020?"},
 ]
-response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages)
 
-if response['choices'][0]['finish_reason'] == "length":
-    print("The chat was ended by reaching the maximum token limit. Continuing the conversation...")
+response = openai.ChatCompletion.create(
+    model="gpt-3.5-turbo",
+    max_tokens=10,
+    messages=messages,
+)
+
+response_text = response["choices"][0]["message"]["content"]
+print(f"response:{response_text}")
+
+if response["choices"][0]["finish_reason"] == "length":
     # Append the last assistant message to the messages
-    new_message_assistant = {"role": "assistant", "content": response['choices'][0]['message']['content']}
+    new_message_assistant = {
+        "role": "assistant",
+        "content": response["choices"][0]["message"]["content"],
+    }
     messages.append(new_message_assistant)
     # Append a new user message to the messages
     new_message_user = {"role": "user", "content": "go on"}
     messages.append(new_message_user)
     # Create a new request with the new messages
-    new_response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages)
-    print(new_response['choices'][0]['message']['content'])
+    new_response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo", messages=messages
+    )
+
+    new_response_text = new_response["choices"][0]["message"]["content"]
+    print(f"new_response:{new_response_text}")
 ```
 
 By managing and handling the `finish_reason` effectively, you can control the text and chat generation more effectively and ensure a seamless continuation even when the maximum token limit is reached.
