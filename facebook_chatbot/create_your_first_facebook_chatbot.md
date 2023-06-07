@@ -84,3 +84,38 @@ You'll need to set up your page subscription to receive messages and postbacks:
 Now, whenever a user sends a message or clicks a postback button in your chatbot, Facebook will send an HTTP POST request to your webhook.
 
 Congratulations! You have now successfully created a Facebook Chatbot. The next steps would be to enhance the bot's functionality by creating responses to user inputs.
+
+Sure, here's how you could incorporate the `send_message` function:
+
+## 7. **Sending a Response Message**
+
+After the webhook verification, the Flask app should handle the incoming messages and postbacks. The example `send_message` function shown below sends a response back to Facebook.
+
+```python
+def send_message(recipient_id, text):
+    """Send a response to Facebook"""
+    payload = {
+        "message": {
+            "text": text
+        },
+        "recipient": {
+            "id": recipient_id
+        },
+        "notification_type": "regular"
+    }
+    auth = {
+        "access_token": fb_page_access_token
+    }
+    response = requests.post(
+        fb_api_url+"me/messages",
+        params=auth,
+        json=payload
+    )
+    return response.json()
+```
+
+In this function, replace `fb_page_access_token` and `fb_api_url` with your Facebook page access token and the API URL, respectively. The `recipient_id` parameter is the user's id who will receive the message, and `text` is the message that you want to send.
+
+Now, whenever a user sends a message or clicks a postback button in your chatbot, Facebook will send an HTTP POST request to your webhook. The `send_message` function can be used to respond to these interactions. Remember to handle exceptions accordingly to ensure a smooth user experience.
+
+Congratulations! You have now successfully created a Facebook Chatbot that can send and receive messages. The next steps would be to enhance the bot's functionality by creating more complex responses and handling more types of user inputs.
