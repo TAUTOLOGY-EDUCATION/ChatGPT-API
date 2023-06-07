@@ -9,6 +9,10 @@ In this guide, we are going to introduce two new methods, `validate_request(requ
 It is important to validate the requests coming from Facebook to ensure that your server is communicating only with Facebook and not any other third-party.
 
 ```python
+import hmac
+import hashlib
+import json
+
 def validate_request(request):
     """Validate the incoming request by comparing X-Hub-Signature"""
     try:
