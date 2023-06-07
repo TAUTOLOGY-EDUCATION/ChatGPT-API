@@ -106,21 +106,22 @@ def listen():
         for x in event:
             text = x["message"]["text"]
             sender_id = x["sender"]["id"]
-            send_message(sender_id, text)
+            reply_message = f"reply for:{text}"
+            send_message(sender_id, reply_message)
         return "ok"
 ```
 
 Here's the `send_message` function:
 
 ```python
-def send_message(recipient_id, text):
+def send_message(recipient_id, reply_message):
     """Send a response to Facebook"""
     fb_page_access_token = "<Your Page Access Token>"
     fb_api_url = "https://graph.facebook.com/v2.6/"
 
     payload = {
         "message": {
-            "text": text
+            "text": reply_message
         },
         "recipient": {
             "id": recipient_id
