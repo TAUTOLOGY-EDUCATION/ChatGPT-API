@@ -88,6 +88,4 @@ def listen():
 
 Now, your Flask app is ready to handle and respond to user messages while validating every incoming request for security.
 
-
-
 Remember to replace `<Your Verification Token>` and `<Your Page Access Token>` in the above code with your actual Facebook verification token and Facebook page access token, respectively. Also, you will need to provide the app secret as `app_secret` variable in your code.
