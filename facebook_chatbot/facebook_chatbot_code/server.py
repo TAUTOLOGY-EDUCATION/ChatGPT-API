@@ -57,8 +57,11 @@ def listen():
                     sender_id = x["sender"]["id"]
                     message_id = x["message"]["mid"]
 
+                    print(f"text :{text}")
+
                     # Prevent processing of duplicate messages
                     if is_duplicate_message(message_id):
+                        print("duplicate")
                         continue
 
                     # Fetch conversation history
@@ -202,7 +205,7 @@ def generate_reply(messages):
     return response_message 
 
 def get_system_role():
-    with open('system_role.txt', 'r') as file:
+    with open('system_role.txt', 'r', encoding='utf-8') as file:
         return file.read().strip()
     
 def is_duplicate_message(message_id):

@@ -12,7 +12,7 @@ Let's add a helper function to read the system role from a text file. The functi
 
 ```python
 def get_system_role():
-    with open('system_role.txt', 'r') as file:
+    with open('system_role.txt', 'r', encoding='utf-8') as file:
         return file.read().strip()
 ```
 
@@ -25,6 +25,7 @@ To prevent duplicate messages when the Facebook call webhook is called twice, we
 Let's add a global set for storing processed message IDs:
 
 ```python
+# processed message
 processed_message_ids = set()
 ```
 
