@@ -68,7 +68,7 @@ def listen():
                     messages = convert_to_chatgpt_message(chat_history, text)
 
                     print("chat history")
-                    for message in messages[1:]]:
+                    for message in messages[1:]:
                         print(f'  {message["role"]}:{message["content"]}')
 
                     # Generate reply with Chat-GPT
