@@ -6,7 +6,7 @@ In this guide, we will walk you through how to integrate OpenAI's GPT-3 based Ch
 
 First, let's understand the sequence of events in our application. Here is a sequence diagram that represents the flow:
 
-![Sequence Diagram](sequencediagram.svg)
+![Sequence Diagram](chatgpt_enhance.svg)
 
 ## Retrieve Conversation History
 
