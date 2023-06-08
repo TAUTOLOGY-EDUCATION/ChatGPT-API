@@ -23,6 +23,9 @@ openai.api_key = "your_openai_api_key"
 # chatbot parameter
 message_count = 10
 
+# processed message
+processed_message_ids = set()
+
 
 def verify_webhook(req):
     print("verify_webhook running")
@@ -54,6 +57,10 @@ def listen():
                     sender_id = x["sender"]["id"]
                     message_id = x["message"]["mid"]
 
+                    # Prevent processing of duplicate messages
+                    if is_duplicate_message(message_id):
+                        continue
+
                     # Fetch conversation history
                     chat_history = get_history_message(sender_id)
 
@@ -61,7 +68,7 @@ def listen():
                     messages = convert_to_chatgpt_message(chat_history, text)
 
                     print("chat history")
-                    for message in messages:
+                    for message in messages[1:]]:
                         print(f'  {message["role"]}:{message["content"]}')
 
                     # Generate reply with Chat-GPT
@@ -146,7 +153,13 @@ def get_message(messages_id):
     return response.json()
 
 def convert_to_chatgpt_message(chat_history, message):
-    messages = []
+
+    # Fetch system role
+    system_role = get_system_role()
+
+    # Add system role as the first element of messages
+    messages = [{"role": "system", "content": system_role}]
+
     for chat in chat_history[::-1]:
         role = "user"
         if chat["from_id"]==page_id:
@@ -187,3 +200,13 @@ def generate_reply(messages):
         logging.error(f"Unexpected error: {str(e)}")
 
     return response_message 
+
+def get_system_role():
+    with open('system_role.txt', 'r') as file:
+        return file.read().strip()
+    
+def is_duplicate_message(message_id):
+    if message_id in processed_message_ids:
+        return True
+    processed_message_ids.add(message_id)
+    return False
