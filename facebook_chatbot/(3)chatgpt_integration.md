@@ -79,7 +79,7 @@ def convert_to_chatgpt_message(chat_history, message):
             role = "assistant"
         content  = chat["message"]
         messages.append({"role":role, "content":content})
-    messages.append({"role":"user", "content":"Answer polite and concisely in a single sentence : "+ message})
+    messages[-1]={"role":"user", "content":"Answer polite and concisely in a single sentence : "+ message}
     return messages
 ```
 
@@ -89,7 +89,12 @@ We will then define a new function `generate_reply()` which uses the `openai.Cha
 
 ```python
 def generate_reply(messages):
+
+    response_message = "please try again later"
+
     try:
+        print("generate_reply running")
+
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=messages,
@@ -97,6 +102,8 @@ def generate_reply(messages):
             top_p=0.2,
             max_tokens=512,
         )
+
+        print(f"response gpt : {response}")
         
         response_message = response.choices[0].message.content
         finish_reason = response.choices[0].finish_reason
@@ -104,9 +111,14 @@ def generate_reply(messages):
         if finish_reason == "length":
             response_message = response_message+"..."
 
+    except openai.error.AuthenticationError:
+        logging.error("AuthenticationError: Invalid API key.")
+    except openai.error.InvalidRequestError:
+        logging.error("InvalidRequestError: Invalid API request.")
+    except openai.error.RateLimitError:
+        logging.error("RateLimitError: API request limit exceeded.")
     except Exception as e:
         logging.error(f"Unexpected error: {str(e)}")
-        response_message = "please try again later"
 
     return response_message 
 ```

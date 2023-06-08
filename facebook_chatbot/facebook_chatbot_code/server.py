@@ -8,7 +8,10 @@ import openai
 
 app = Flask(__name__)
 
+logging.basicConfig(filename="openai_api_errors.log", level=logging.ERROR)
+
 # facebook parameter
+fb_verify_token = "your_fb_verify_token"
 app_secret = "your_app_secret"
 fb_page_access_token = "your_fb_page_access_token"
 fb_api_url = "https://graph.facebook.com/v2.6/"
@@ -20,11 +23,14 @@ openai.api_key = "your_openai_api_key"
 # chatbot parameter
 message_count = 10
 
+
 def verify_webhook(req):
     print("verify_webhook running")
+
     calling_verify_token = req.args.get("hub.verify_token")
+
     print(f"calling_verify_token : {calling_verify_token}")
-    fb_verify_token = "fb_verify_token_pree"
+
     if calling_verify_token == fb_verify_token:
         challenge = req.args.get("hub.challenge")
         return challenge
@@ -44,18 +50,28 @@ def listen():
             event = payload["entry"][0]["messaging"]
             for x in event:
                 if is_user_message(x):
+                    text = x["message"]["text"]
                     sender_id = x["sender"]["id"]
+                    message_id = x["message"]["mid"]
 
                     # Fetch conversation history
                     chat_history = get_history_message(sender_id)
 
+                    # Convert the conversation history to chatgpt format
+                    messages = convert_to_chatgpt_message(chat_history, text)
+
+                    print("chat history")
+                    for message in messages:
+                        print(f'  {message["role"]}:{message["content"]}')
+
                     # Generate reply with Chat-GPT
-                    reply_message = generate_reply(chat_history)
+                    reply_message = generate_reply(messages)
 
                     send_message(sender_id, reply_message)
             return "ok"
         else:
             return "invalid"
+
 
 def send_message(recipient_id, reply_message):
     """Send a response to Facebook"""
@@ -77,7 +93,6 @@ def send_message(recipient_id, reply_message):
         params=auth,
         json=payload
     )
-    print(response.json())
     return response.json()
 
 def validate_request(request):
@@ -130,8 +145,24 @@ def get_message(messages_id):
     response = requests.request("GET", url, headers={}, data={})
     return response.json()
 
+def convert_to_chatgpt_message(chat_history, message):
+    messages = []
+    for chat in chat_history[::-1]:
+        role = "user"
+        if chat["from_id"]==page_id:
+            role = "assistant"
+        content  = chat["message"]
+        messages.append({"role":role, "content":content})
+    messages[-1]={"role":"user", "content":"Answer polite and concisely in a single sentence : "+ message}
+    return messages
+
 def generate_reply(messages):
+
+    response_message = "please try again later"
+
     try:
+        print("generate_reply running")
+
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=messages,
@@ -146,10 +177,13 @@ def generate_reply(messages):
         if finish_reason == "length":
             response_message = response_message+"..."
 
+    except openai.error.AuthenticationError:
+        logging.error("AuthenticationError: Invalid API key.")
+    except openai.error.InvalidRequestError:
+        logging.error("InvalidRequestError: Invalid API request.")
+    except openai.error.RateLimitError:
+        logging.error("RateLimitError: API request limit exceeded.")
     except Exception as e:
         logging.error(f"Unexpected error: {str(e)}")
-
-
-        response_message = "please try again later"
 
     return response_message 
