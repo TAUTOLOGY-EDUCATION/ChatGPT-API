@@ -25,6 +25,7 @@ Next, we will define global parameters required for both the Facebook API and Op
 
 ```python
 # facebook parameter
+fb_verify_token = "your_fb_verify_token"
 app_secret = "your_app_secret"
 fb_page_access_token = "your_fb_page_access_token"
 fb_api_url = "https://graph.facebook.com/v2.6/"
@@ -88,14 +89,29 @@ def generate_reply(messages):
 
     except Exception as e:
         logging.error(f"Unexpected error: {str(e)}")
-
-
         response_message = "please try again later"
 
     return response_message 
 ```
 
-### 5. Edit Existing Code
+### 5. Convert to ChatGPT Messages
+
+This function, `convert_to_chatgpt_message()`, takes in the conversation history and the latest message as inputs, and returns a list of message dictionaries where each dictionary includes a 'role' (either 'user' or 'assistant') and 'content' (the message itself). The message dictionaries are in the required format for GPT-3's chat models.
+
+```python
+def convert_to_chatgpt_message(chat_history, message):
+    messages = []
+    for chat in chat_history[::-1]:
+        role = "user"
+        if chat["from_id"]==page_id:
+            role = "assistant"
+        content  = chat["message"]
+        messages.append({"role":role, "content":content})
+    messages.append({"role":"user", "content":"Answer polite and concisely in a single sentence : "+ message})
+    return messages
+```
+
+### 6. Edit Existing Code
 
 Next, we will edit the `listen()` and `send_message()` functions in your existing `server.py` script. Inside `listen()`, we fetch the conversation history and generate a reply using the `generate_reply()` function. We then send this reply with the `send_message()` function:
 
@@ -113,18 +129,33 @@ def listen():
             event = payload["entry"][0]["messaging"]
             for x in event:
                 if is_user_message(x):
+                    text = x["message"]["text"]
                     sender_id = x["sender"]["id"]
+                    message_id = x["message"]["mid"]
 
                     # Fetch conversation history
                     chat_history = get_history_message(sender_id)
 
+                    # Convert the conversation history to chatgpt format
+                    messages = convert_to_chatgpt_message(chat_history, text)
+
                     # Generate reply with Chat-GPT
-                    reply_message = generate_reply(chat_history)
+                    reply_message = generate_reply(messages)
 
                     send_message(sender_id, reply_message)
             return "ok"
         else:
             return "invalid"
+
 ```
+
+Adding logging to your application is a great way to track down and diagnose errors. Here's how you can add the logging configuration to your `server.py` script.
+
+```python
+# Logging Configuration
+logging.basicConfig(filename="openai_api_errors.log", level=logging.ERROR)
+```
+
+This line should be placed at the top of your Python script, before the application code begins. It sets up a basic configuration for logging to a file named `openai_api_errors.log`. Only error messages or higher will be logged.
 
 That's it! You have now successfully integrated your Facebook chatbot with Chat-GPT. You can now run your `server.py` script without syntax errors. Enjoy the enhanced conversational capabilities of your chatbot!
