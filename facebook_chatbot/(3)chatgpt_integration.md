@@ -2,12 +2,6 @@
 
 In this guide, we will walk you through the steps of enhancing your existing Facebook chatbot by integrating it with Chat-GPT from OpenAI. We will modify a Python script (`server.py`) which uses the Flask web framework. 
 
-Before you start, ensure you have the following prerequisites:
-* Basic understanding of Python and Flask.
-* Facebook Page and App with Messenger API set up.
-* Access to the OpenAI GPT-3 API.
-* Installed necessary Python packages (`flask`, `requests`, `openai`, etc.).
-
 ## Workflow
 
 Below is a sequence diagram that outlines the basic workflow of our enhanced chatbot.
