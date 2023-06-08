@@ -3,9 +3,22 @@ import requests
 import hmac
 import hashlib
 import json
+import logging
+import openai
 
 app = Flask(__name__)
+
+# facebook parameter
 app_secret = "your_app_secret"
+fb_page_access_token = "your_fb_page_access_token"
+fb_api_url = "https://graph.facebook.com/v2.6/"
+page_id = "your_page_id"
+
+# openai parameter
+openai.api_key = "your_openai_api_key"
+
+# chatbot parameter
+message_count = 10
 
 def verify_webhook(req):
     print("verify_webhook running")
@@ -31,10 +44,14 @@ def listen():
             event = payload["entry"][0]["messaging"]
             for x in event:
                 if is_user_message(x):
-                    text = x["message"]["text"]
                     sender_id = x["sender"]["id"]
-                    message_id = x["message"]["mid"]
-                    reply_message = f"reply for:{text}"
+
+                    # Fetch conversation history
+                    chat_history = get_history_message(sender_id)
+
+                    # Generate reply with Chat-GPT
+                    reply_message = generate_reply(chat_history)
+
                     send_message(sender_id, reply_message)
             return "ok"
         else:
@@ -42,8 +59,6 @@ def listen():
 
 def send_message(recipient_id, reply_message):
     """Send a response to Facebook"""
-    fb_page_access_token = "your_page_access_token"
-    fb_api_url = "https://graph.facebook.com/v2.6/"
 
     payload = {
         "message": {
@@ -94,3 +109,47 @@ def is_user_message(message):
     return (message.get("message") and
             message["message"].get("text") and
             not message["message"].get("is_echo"))
+
+def get_history_message(sender):
+    print("get_history_message running")
+    url = f"{fb_api_url}{page_id}/conversations/?user_id={sender}&access_token={fb_page_access_token}&fields=messages"
+    response = requests.request("GET", url, headers={}, data={})
+    chat_history = []
+    chat_ids = response.json()["data"][0]["messages"]["data"]
+    for chat in chat_ids[:message_count]:
+        messages_id = chat["id"]
+        created_time = chat["created_time"]
+        get_message_response = get_message(messages_id)
+        message = get_message_response["message"]
+        from_id = get_message_response["from"]["id"]
+        chat_history.append({"message":message, "from_id":from_id})
+    return chat_history
+
+def get_message(messages_id):
+    url = f"{fb_api_url}{messages_id}?access_token={fb_page_access_token}&fields=from,message"
+    response = requests.request("GET", url, headers={}, data={})
+    return response.json()
+
+def generate_reply(messages):
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=messages,
+            temperature=0.2,
+            top_p=0.2,
+            max_tokens=512,
+        )
+        
+        response_message = response.choices[0].message.content
+        finish_reason = response.choices[0].finish_reason
+
+        if finish_reason == "length":
+            response_message = response_message+"..."
+
+    except Exception as e:
+        logging.error(f"Unexpected error: {str(e)}")
+
+
+        response_message = "please try again later"
+
+    return response_message 

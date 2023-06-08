@@ -24,11 +24,17 @@ import openai
 Next, we will define global parameters required for both the Facebook API and OpenAI API:
 
 ```python
+# facebook parameter
+app_secret = "your_app_secret"
 fb_page_access_token = "your_fb_page_access_token"
 fb_api_url = "https://graph.facebook.com/v2.6/"
 page_id = "your_page_id"
-message_count = "your_preferred_message_count"
+
+# openai parameter
 openai.api_key = "your_openai_api_key"
+
+# chatbot parameter
+message_count = 10
 ```
 
 Replace the placeholder values (`"your_app_secret"`, `"your_fb_page_access_token"`, etc.) with your actual values.
