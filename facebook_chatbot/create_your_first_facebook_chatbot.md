@@ -36,6 +36,8 @@ To build a chatbot, you'll need a developer account on Facebook:
 
 ## 5. **Create a Flask App and Verify Webhook**
 
+![Register Webhook Process](register_webhook.svg)
+
 To communicate with Facebook servers, you'll need to set up a webhook. This involves creating a Flask endpoint to accept these webhook events:
 
 ```python
@@ -87,6 +89,8 @@ To receive messages and postbacks, you need to set up your page subscription:
 Now, whenever a user sends a message or clicks a postback button in your chatbot, Facebook will send an HTTP POST request to your webhook.
 
 ## 7. **Sending a Response Message**
+
+![Chat Process](chat_process.svg)
 
 After the webhook verification, the Flask app should handle incoming messages and postbacks. Below is an example of a `send_message` function that sends a response back to Facebook by modifying the `listen()` function:
 
