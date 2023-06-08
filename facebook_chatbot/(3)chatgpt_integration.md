@@ -66,7 +66,24 @@ def get_message(messages_id):
     return response.json()
 ```
 
-### 4. Add Chat-GPT Function
+### 4. Convert to ChatGPT Messages
+
+This function, `convert_to_chatgpt_message()`, takes in the conversation history and the latest message as inputs, and returns a list of message dictionaries where each dictionary includes a 'role' (either 'user' or 'assistant') and 'content' (the message itself). The message dictionaries are in the required format for GPT-3's chat models.
+
+```python
+def convert_to_chatgpt_message(chat_history, message):
+    messages = []
+    for chat in chat_history[::-1]:
+        role = "user"
+        if chat["from_id"]==page_id:
+            role = "assistant"
+        content  = chat["message"]
+        messages.append({"role":role, "content":content})
+    messages.append({"role":"user", "content":"Answer polite and concisely in a single sentence : "+ message})
+    return messages
+```
+
+### 5. Add Chat-GPT Function
 
 We will then define a new function `generate_reply()` which uses the `openai.ChatCompletion.create()` function to generate a reply from the Chat-GPT model:
 
@@ -94,22 +111,6 @@ def generate_reply(messages):
     return response_message 
 ```
 
-### 5. Convert to ChatGPT Messages
-
-This function, `convert_to_chatgpt_message()`, takes in the conversation history and the latest message as inputs, and returns a list of message dictionaries where each dictionary includes a 'role' (either 'user' or 'assistant') and 'content' (the message itself). The message dictionaries are in the required format for GPT-3's chat models.
-
-```python
-def convert_to_chatgpt_message(chat_history, message):
-    messages = []
-    for chat in chat_history[::-1]:
-        role = "user"
-        if chat["from_id"]==page_id:
-            role = "assistant"
-        content  = chat["message"]
-        messages.append({"role":role, "content":content})
-    messages.append({"role":"user", "content":"Answer polite and concisely in a single sentence : "+ message})
-    return messages
-```
 
 ### 6. Edit Existing Code
 
