@@ -1,25 +1,22 @@
 # Enhance Your Chatbot with Chat-GPT
 
-In this guide, we will walk you through how to integrate OpenAI's GPT-3 based ChatGPT into a Flask application serving as a Facebook Messenger chatbot.
+You can significantly improve the interaction quality of your chatbot by integrating the OpenAI's Chat-GPT model. This powerful AI model enables your chatbot to generate human-like responses.
+
+The existing Facebook chatbot server code needs some adjustments to incorporate the Chat-GPT model. This document explains the steps needed to edit your "server.py" file for the Facebook chatbot.
+
+Let's get started!
 
 ## Workflow Sequence Diagram
 
-First, let's understand the sequence of events in our application. Here is a sequence diagram that represents the flow:
+Below is the sequence diagram that represents the workflow of the enhanced chatbot:
 
-![Sequence Diagram](chatgpt_enhance.svg)
+![sequence diagram](chatgpt_enhance.svg)
 
-## Retrieve Conversation History
+## Adding Chat History
 
-ChatGPT can generate more accurate responses if it's provided with some conversation history. We can fetch this history from our Facebook page using the provided functions:
+First, we will add the functionality to get the conversation history. This history can then be used as input for the Chat-GPT model. Add the following functions to your "server.py" file.
 
 ```python
-import requests
-
-fb_api_url = "https://graph.facebook.com/v2.6/"
-page_id = "<your_page_id>"
-fb_page_access_token = "<your_page_access_token>"
-message_count = "<desired_message_count>"
-
 def get_history_message(sender):
     print("get_history_message running")
     url = f"{fb_api_url}{page_id}/conversations/?user_id={sender}&access_token={fb_page_access_token}&fields=messages"
@@ -43,16 +40,13 @@ def get_message(messages_id):
     return response.json()
 ```
 
-Remember to replace `<your_page_id>`, `<your_page_access_token>`, and `<desired_message_count>` with your specific Facebook page ID, page access token, and the number of messages to be fetched.
+These functions will call Facebook API to retrieve chat history between the user and your page.
 
-## Generate Reply with ChatGPT
+## Adding Chat-GPT for Reply Generation
 
-We will use OpenAI's `ChatCompletion.create` method to generate a reply using ChatGPT:
+Next, we will use the `chat()` method provided by the OpenAI API for generating the reply message. Here is the function:
 
 ```python
-import openai
-import logging
-
 def generate_reply(messages):
     try:
         response = openai.ChatCompletion.create(
@@ -67,64 +61,49 @@ def generate_reply(messages):
         finish_reason = response.choices[0].finish_reason
 
         if finish_reason == "length":
-            response_message = response_message + "..."
+            response_message = response_message+"..."
 
-    except Exception as e:
+    except ex:
         logging.error(f"Unexpected error: {str(e)}")
         response_message = "please try again later"
 
-    return response_message
+return response_message 
 ```
 
-Note that you will need an OpenAI account and API key for this to work.
+This function generates a reply message using the Chat-GPT model. If the reason for the termination of the message is the length, the response is appended with "..." to indicate the message was cut off. 
 
-## Facebook Messenger Chatbot using Flask
+## Integrating into Existing Server Code
 
-Now that we have the functions for retrieving the chat history and generating a reply using ChatGPT, let's integrate them into our Flask application:
+Lastly, we will integrate the functions into the existing server code. In the `listen()` function, call `get_history_message()` to get the chat history and pass it to `generate_reply()` for generating the reply.
+
+Replace the line:
+```python
+reply_message = f"reply for:{text}"
+```
+with the following lines:
+```python
+history = get_history_message(sender_id)
+reply_message = generate_reply(history)
+```
+
+That's it! With these adjustments, your chatbot can generate much more intelligent responses using the power of OpenAI's Chat-GPT.
+
+In the provided Python code, there are a few parameters that are currently hard-coded and can be defined globally for better code organization. Here's how you can define them at the top of your "server.py" script:
 
 ```python
-from flask import Flask, request
-import requests
-import hmac
-import hashlib
-import json
-
-app = Flask(__name__)
-app_secret = "<your_app_secret>"
-fb_verify_token = "<your_verify_token>"
-fb_page_access_token = "<your_page_access_token>"
+# Facebook parameters
 fb_api_url = "https://graph.facebook.com/v2.6/"
+fb_page_access_token = "your_page_access_token"
+page_id = "your_page_id"
+app_secret = "your_app_secret"
+fb_verify_token = "your_fb_verify_token" # Please replace with your Facebook verify token
 
-# Existing functions here (verify_webhook, get_history_message, get_message, generate_reply)
-
-@app.route("/webhook", methods=["GET","POST"])
-def
-
- listen():
-    if request.method == "GET":
-        return verify_webhook(request)
-
-    if request.method == "POST":
-        if validate_request(request):
-            payload = request.json
-            event = payload["entry"][0]["messaging"]
-            for x in event:
-                if is_user_message(x):
-                    text = x["message"]["text"]
-                    sender_id = x["sender"]["id"]
-                    message_id = x["message"]["mid"]
-                    
-                    chat_history = get_history_message(sender_id)
-                    reply_message = generate_reply(chat_history)
-                    
-                    send_message(sender_id, reply_message)
-            return "ok"
-        else:
-            return "invalid"
-
-# Remaining functions here (send_message, validate_request, is_user_message)
+# Message parameters
+message_count = 5 # Define how many previous messages to retrieve
 ```
 
-Don't forget to replace `<your_app_secret>`, `<your_verify_token>`, and `<your_page_access_token>` with your app's secret, verification token, and page access token respectively.
+Note: Make sure to replace `your_page_id` with your actual Facebook page ID and `your_fb_verify_token` with your actual Facebook verify token.
 
-This updated Flask application will now use ChatGPT to generate its replies, making your chatbot much more sophisticated and engaging!
+Also, the `message_count` parameter defines how many past messages you want to consider for generating the reply. Adjust it according to your requirements. 
+
+Remember to update the respective places in your code where these values are used with the corresponding variable names.
