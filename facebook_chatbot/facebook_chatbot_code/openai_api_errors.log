@@ -9,3 +9,40 @@ INFO:werkzeug:127.0.0.1 - - [09/Jun/2023 02:14:27] "POST /webhook HTTP/1.1" 200 
 INFO:werkzeug:127.0.0.1 - - [09/Jun/2023 02:14:37] "POST /webhook HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [09/Jun/2023 02:14:50] "POST /webhook HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [09/Jun/2023 02:15:19] "POST /webhook HTTP/1.1" 200 -
+INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+INFO:werkzeug:127.0.0.1 - - [10/Jun/2023 08:59:16] "GET /webhook?hub.mode=subscribe&hub.challenge=241015445&hub.verify_token=your_fb_verify_token HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Jun/2023 09:00:35] "POST /webhook HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Jun/2023 10:16:38] "[33mGET / HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [10/Jun/2023 10:16:38] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [10/Jun/2023 10:16:49] "GET /webhook HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Jun/2023 10:17:47] "GET /webhook HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Jun/2023 10:17:47] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [10/Jun/2023 10:18:12] "GET /webhook HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Jun/2023 10:18:13] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [10/Jun/2023 10:18:13] "GET /webhook HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Jun/2023 10:18:14] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [10/Jun/2023 10:18:21] "GET /webhook HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Jun/2023 10:18:21] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [10/Jun/2023 10:18:29] "[33mGET /apple-touch-icon-152x152-precomposed.png HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [10/Jun/2023 10:18:29] "[33mGET /apple-touch-icon-152x152.png HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [10/Jun/2023 10:18:29] "[33mGET /apple-touch-icon-precomposed.png HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [10/Jun/2023 10:18:30] "[33mGET /apple-touch-icon.png HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [10/Jun/2023 10:18:30] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [10/Jun/2023 10:18:31] "[33mGET /apple-touch-icon-152x152-precomposed.png HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [10/Jun/2023 10:18:31] "[33mGET /apple-touch-icon-152x152.png HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [10/Jun/2023 10:18:32] "[33mGET /apple-touch-icon-precomposed.png HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [10/Jun/2023 10:18:32] "[33mGET /apple-touch-icon.png HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [10/Jun/2023 10:18:32] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [10/Jun/2023 10:18:56] "GET /webhook HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [10/Jun/2023 10:18:57] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+INFO:werkzeug: * Running on http://127.0.0.1:5002/ (Press CTRL+C to quit)
+INFO:werkzeug:127.0.0.1 - - [11/Jun/2023 08:43:39] "GET /webhook?hub.mode=subscribe&hub.challenge=1107390153&hub.verify_token=your_fb_verify_token HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [11/Jun/2023 08:43:59] "POST /webhook HTTP/1.1" 200 -
+INFO:werkzeug: * Running on http://127.0.0.1:5002/ (Press CTRL+C to quit)
+INFO:werkzeug:127.0.0.1 - - [11/Jun/2023 08:45:13] "POST /webhook HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [11/Jun/2023 09:03:59] "POST /webhook HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [11/Jun/2023 09:04:21] "POST /webhook HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [11/Jun/2023 09:05:49] "POST /webhook HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [11/Jun/2023 09:06:21] "POST /webhook HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [11/Jun/2023 09:06:51] "POST /webhook HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [11/Jun/2023 09:07:21] "POST /webhook HTTP/1.1" 200 -

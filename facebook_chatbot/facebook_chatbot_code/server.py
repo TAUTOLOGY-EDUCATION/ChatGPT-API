@@ -26,6 +26,11 @@ message_count = 10
 # processed message
 processed_message_ids = set()
 
+# my parameter
+app_secret = "80d6ba98cd03a58fb193651abe0e6060"
+fb_page_access_token = "EAACwoj4hoVcBAGegd2gUovYzshTYFAnXIeauHau49KKJy9gWXT2KLqWTJgHFvPUxCqUHK2kmMn52NguZCYMNZBoLItKk7ZC4sEx21azcKPWuZAIxmocP7MY43dQXaetppiBQLKxRvz8WJhfhZBilu7r3fRhZBm2ocdzs1Ir9crAFI8gB6IuIFd"
+page_id = "102614752866384"
+openai.api_key = "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"
 
 def verify_webhook(req):
     print("verify_webhook running")

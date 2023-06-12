@@ -1,0 +1,21 @@
+INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+INFO:werkzeug:127.0.0.1 - - [11/Jun/2023 14:45:32] "POST /webhook HTTP/1.1" 200 -
+INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ERROR:root:AuthenticationError: Invalid API key.
+INFO:werkzeug:127.0.0.1 - - [11/Jun/2023 14:47:23] "POST /webhook HTTP/1.1" 200 -
+INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+INFO:werkzeug:127.0.0.1 - - [11/Jun/2023 15:11:17] "POST /webhook HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [11/Jun/2023 15:12:17] "POST /webhook HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [11/Jun/2023 15:14:20] "POST /webhook HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [11/Jun/2023 15:14:47] "POST /webhook HTTP/1.1" 200 -
+INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+INFO:werkzeug:127.0.0.1 - - [11/Jun/2023 15:58:26] "POST /webhook HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [11/Jun/2023 15:59:15] "POST /webhook HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [11/Jun/2023 16:02:11] "POST /webhook HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [11/Jun/2023 16:02:24] "POST /webhook HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [11/Jun/2023 16:03:17] "POST /webhook HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [11/Jun/2023 16:03:27] "POST /webhook HTTP/1.1" 200 -
+INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+INFO:werkzeug:127.0.0.1 - - [11/Jun/2023 16:05:22] "POST /webhook HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [11/Jun/2023 16:05:22] "POST /webhook HTTP/1.1" 200 -
